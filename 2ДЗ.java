@@ -1,0 +1,171 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+// Интерфейс для операций
+interface Operation {
+    double calculate(double a, double b);
+}
+
+// Классы для конкретных операций
+class Addition implements Operation {
+    @Override
+    public double calculate(double a, double b) {
+        return a + b;
+    }
+}
+
+class Subtraction implements Operation {
+    @Override
+    public double calculate(double a, double b) {
+        return a - b;
+    }
+}
+
+class Multiplication implements Operation {
+    @Override
+    public double calculate(double a, double b) {
+        return a * b;
+    }
+}
+
+class Division implements Operation {
+    @Override
+    public double calculate(double a, double b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Ошибка: деление на ноль!");
+        }
+        return a / b;
+    }
+}
+
+class IntegerDivision implements Operation {
+    @Override
+    public double calculate(double a, double b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Ошибка: деление на ноль!");
+        }
+        return (int) (a / b);
+    }
+}
+
+class Power implements Operation {
+    @Override
+    public double calculate(double a, double b) {
+        return Math.pow(a, b);
+    }
+}
+
+class Modulo implements Operation {
+    @Override
+    public double calculate(double a, double b) {
+         if (b == 0) {
+            throw new IllegalArgumentException("Ошибка: деление на ноль!");
+        }
+        return a % b;
+    }
+}
+
+// Класс для фабрики операций
+class OperationFactory {
+    private static final Map<String, Operation> operations = new HashMap<>();
+
+    static {
+        operations.put("+", new Addition());
+        operations.put("-", new Subtraction());
+        operations.put("*", new Multiplication());
+        operations.put("/", new Division());
+        operations.put("//", new IntegerDivision());
+        operations.put("^", new Power());
+        operations.put("%", new Modulo());
+    }
+
+    public static Operation getOperation(String operator) {
+        Operation operation = operations.get(operator);
+        if (operation == null) {
+            throw new IllegalArgumentException("Неподдерживаемая операция: " + operator);
+        }
+        return operation;
+    }
+}
+
+
+//Класс валидатора
+class ExpressionValidator {
+    public boolean isValidOperation(String operation) {
+                return "+".equals(operation) || "-".equals(operation) || "*".equals(operation) || "/".equals(operation) || "//".equals(operation) || "^".equals(operation) || "%".equals(operation);
+    }
+    public boolean isValidNumber(String number) {
+        try {
+            Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+}
+
+
+public class Calculator {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ExpressionValidator validator = new ExpressionValidator();
+
+        System.out.println("Консольный калькулятор");
+        System.out.println("Поддерживаемые операции: +, -, *, /, //, ^, %");
+        System.out.println("Введите выражение с пробелом, в формате: число операция число (например, 2 + 3)");
+        System.out.println("Для выхода введите 'exit'");
+
+        while (true) {
+            System.out.println("Введите выражение:");
+            String input = scanner.nextLine();
+
+            if (input.equals("exit")) {
+                System.out.println("Выход из программы.");
+                break;
+            }
+
+            try {
+                String[] parts = input.split(" ");
+                if (parts.length != 3) {
+                    System.out.println("Неверное выражение. Введите еще раз:");
+                    continue;
+                }
+
+                String num1Str = parts[0].replace(",", ".");
+                String operation = parts[1];
+                String num2Str = parts[2].replace(",", ".");
+
+
+                if(!validator.isValidNumber(num1Str) || !validator.isValidNumber(num2Str)){
+                    System.out.println("Операнды должны быть числами");
+                    continue;
+                }
+
+                if(!validator.isValidOperation(operation)){
+                     System.out.println("Операция не поддерживается");
+                     continue;
+                }
+
+
+                double num1 = Double.parseDouble(num1Str);
+                double num2 = Double.parseDouble(num2Str);
+
+                Operation op = OperationFactory.getOperation(operation);
+                double result = op.calculate(num1, num2);
+
+                System.out.println("Результат: " + result);
+
+            } catch (NumberFormatException e) {
+                System.out.println("Неверный формат числа. Введите еще раз:");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Неверное выражение. Введите еще раз:");
+            }
+        }
+
+        scanner.close();
+    }
+}
