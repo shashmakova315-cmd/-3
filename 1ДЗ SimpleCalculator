@@ -1,61 +1,74 @@
 import java.util.Scanner;
+import java.text.DecimalFormat;
 
 public class SimpleCalculator {
+
+    private static final DecimalFormat df = new DecimalFormat("0.00"); // Формат вывода
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Выводим информацию о поддерживаемых операциях
-        System.out.println("Консальный калькулятор");
-        System.out.println("Поддерживаемые операции: +, -, *, /, ^");
+        System.out.println("Консольный калькулятор");
+        System.out.println("Поддерживаемые операции: +, -, *, /, ^, %, //");
         System.out.println("Введите выражение с пробелом, в формате: число операция число (например, 2 + 3)");
         System.out.println("Для выхода введите 'exit'");
 
-        // Основной цикл программы
         while (true) {
             System.out.println("Введите выражение:");
             String input = scanner.nextLine();
 
-            // Проверяем команду выхода
             if (input.equals("exit")) {
                 System.out.println("Выход из программы.");
                 break;
             }
 
-            // Обрабатываем выражение
             try {
-                String[] parts = input.split(" "); // Разделяем строку на части (число, операция, число)
+                String[] parts = input.split(" ");
                 if (parts.length != 3) {
-                    System.out.println("Неверное выражение. Введите еще раз:");
+                    System.out.println("Ошибка: Неверное количество аргументов. Введите выражение в формате 'число операция число'.");
                     continue;
                 }
 
-                double num1 = Double.parseDouble(parts[0].replace(",", ".")); // Получаем первое число и меняем запятую на точку для корректной работы с double
-                String operation = parts[1]; // Получаем операцию
-                double num2 = Double.parseDouble(parts[2].replace(",", ".")); // Получаем второе число и меняем запятую на точку для корректной работы с double
+                double num1 = parseDouble(parts[0]);
+                String operation = parts[1];
+                double num2 = parseDouble(parts[2]);
 
-                // Выполняем операцию и выводим результат
+                if (!isValidOperation(operation)) {
+                    System.out.println("Ошибка: Неподдерживаемая операция: " + operation);
+                    continue;
+                }
+
+
                 double result = calculate(num1, operation, num2);
-                System.out.println("Результат: " + result);
+                System.out.println("Результат: " + df.format(result)); // Форматированный вывод
 
             } catch (NumberFormatException e) {
-                System.out.println("Неверный формат числа. Введите еще раз:");
+                System.out.println("Ошибка: Неверный формат числа. Введите число.");
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage()); // Выводим сообщение об ошибке, например, о делении на ноль
+                System.out.println("Ошибка: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("Неверное выражение. Введите еще раз:");
+                System.out.println("Ошибка: Неверное выражение. Введите еще раз.");
             }
         }
 
         scanner.close();
     }
 
-    // Функция для проверки корректности выражения
-    public static boolean isValidExpression(String expression) {
-        // Проверяем что выражение не пустое
-        return !expression.isEmpty();
+
+    private static double parseDouble(String str) {
+        try {
+            return Double.parseDouble(str.replace(",", "."));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Не удалось преобразовать '" + str + "' в число.");
+        }
     }
-        // Функция для выполнения вычислений
+
+
+    private static boolean isValidOperation(String operation) {
+        return "+-*/^%//".contains(operation);
+    }
+
+
     public static double calculate(double num1, String operation, double num2) {
         switch (operation) {
             case "+":
@@ -65,14 +78,8 @@ public class SimpleCalculator {
             case "*":
                 return multiply(num1, num2);
             case "/":
-                if (num2 == 0) {
-                    throw new IllegalArgumentException("Ошибка - деление на 0.");
-                }
                 return divide(num1, num2);
             case "//":
-                if (num2 == 0) {
-                    throw new IllegalArgumentException("Ошибка - деление на 0.");
-                }
                 return integerDivide(num1, num2);
             case "^":
                 return power(num1, num2);
@@ -83,7 +90,6 @@ public class SimpleCalculator {
         }
     }
 
-    // Функции для выполнения операций
     public static double sum(double a, double b) {
         return a + b;
     }
@@ -97,11 +103,17 @@ public class SimpleCalculator {
     }
 
     public static double divide(double a, double b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Ошибка - деление на 0.");
+        }
         return a / b;
     }
 
     public static double integerDivide(double a, double b) {
-       return (int) (a / b);
+        if (b == 0) {
+            throw new IllegalArgumentException("Ошибка - целочисленное деление на 0.");
+        }
+        return (int) (a / b);
     }
 
     public static double power(double a, double b) {
