@@ -1,4 +1,3 @@
-
 import .util.ArrayList;
 import java.util.List;
 
@@ -12,283 +11,426 @@ public class ObservableStringBuilder {
     }
 
     public ObservableStringBuilder(int capacity) {
-        this.stringBuilder = new StringBuilder(capacity);
+        try {
+            this.stringBuilder = new StringBuilder(capacity);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Ошибка при создании StringBuilder с заданной вместимостью: " + e.getMessage());
+            this.stringBuilder = new StringBuilder(); // Создаем с вместимостью по умолчанию
+        }
     }
 
     public ObservableStringBuilder(CharSequence seq) {
-        this.stringBuilder = new StringBuilder(seq);
+        try {
+            this.stringBuilder = new StringBuilder(seq);
+        } catch (NullPointerException e) {
+            System.err.println("Ошибка при создании StringBuilder из CharSequence: " + e.getMessage());
+            this.stringBuilder = new StringBuilder(); // Создаем пустой
+        }
     }
 
     public ObservableStringBuilder(String str) {
-        this.stringBuilder = new StringBuilder(str);
+        try {
+            this.stringBuilder = new StringBuilder(str);
+        } catch (NullPointerException e) {
+            System.err.println("Ошибка при создании StringBuilder из String: " + e.getMessage());
+            this.stringBuilder = new StringBuilder(); // Создаем пустой
+        }
     }
 
     // Методы делегированные StringBuilder и уведомляющие наблюдателей
 
     public ObservableStringBuilder append(Object obj) {
-        stringBuilder.append(obj);
-        notifyObservers();
+        try {
+            stringBuilder.append(obj);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(Object): " + e.getMessage());
+            // Можно предпринять другие действия, например, логировать ошибку.
+        }
         return this;
     }
 
     public ObservableStringBuilder append(String str) {
-        stringBuilder.append(str);
-        notifyObservers();
+        try {
+            stringBuilder.append(str);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(String): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(StringBuffer sb) {
-        stringBuilder.append(sb);
-        notifyObservers();
+        try {
+            stringBuilder.append(sb);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(StringBuffer): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(CharSequence s) {
-        stringBuilder.append(s);
-        notifyObservers();
+        try {
+            stringBuilder.append(s);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(CharSequence): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(CharSequence s, int start, int end) {
-        stringBuilder.append(s, start, end);
-        notifyObservers();
+        try {
+            stringBuilder.append(s, start, end);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(CharSequence, int, int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(char[] str) {
-        stringBuilder.append(str);
-        notifyObservers();
+        try {
+            stringBuilder.append(str);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(char[]): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(char[] str, int offset, int len) {
-        stringBuilder.append(str, offset, len);
-        notifyObservers();
+        try {
+            stringBuilder.append(str, offset, len);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(char[], int, int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(boolean b) {
-        stringBuilder.append(b);
-        notifyObservers();
+        try {
+            stringBuilder.append(b);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(boolean): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(char c) {
-        stringBuilder.append(c);
-        notifyObservers();
+        try {
+            stringBuilder.append(c);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(char): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(int i) {
-        stringBuilder.append(i);
-        notifyObservers();
+        try {
+            stringBuilder.append(i);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(long lng) {
-        stringBuilder.append(lng);
-        notifyObservers();
+        try {
+            stringBuilder.append(lng);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(long): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(float f) {
-        stringBuilder.append(f);
-        notifyObservers();
+        try {
+            stringBuilder.append(f);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(float): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder append(double d) {
-        stringBuilder.append(d);
-        notifyObservers();
+        try {
+            stringBuilder.append(d);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при append(double): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder appendCodePoint(int codePoint) {
-        stringBuilder.appendCodePoint(codePoint);
-        notifyObservers();
+        try {
+            stringBuilder.appendCodePoint(codePoint);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при appendCodePoint(int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder delete(int start, int end) {
-        stringBuilder.delete(start, end);
-        notifyObservers();
+        try {
+            stringBuilder.delete(start, end);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при delete(int, int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder deleteCharAt(int index) {
-        stringBuilder.deleteCharAt(index);
-        notifyObservers();
+        try {
+            stringBuilder.deleteCharAt(index);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при deleteCharAt(int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder replace(int start, int end, String str) {
-        stringBuilder.replace(start, end, str);
-        notifyObservers();
+        try {
+            stringBuilder.replace(start, end, str);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при replace(int, int, String): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int index, CharSequence s) {
-        stringBuilder.insert(index, s);
-        notifyObservers();
+        try {
+            stringBuilder.insert(index, s);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, CharSequence): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int index, CharSequence s, int start, int end) {
-        stringBuilder.insert(index, s, start, end);
-        notifyObservers();
+        try {
+            stringBuilder.insert(index, s, start, end);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, CharSequence, int, int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int dstOffset, char[] str) {
-        stringBuilder.insert(dstOffset, str);
-        notifyObservers();
-        return this;
-    }
-
-    public ObservableStringBuilder insert(int offset, char[] str, int index, int len) {
-        stringBuilder.insert(offset, str, index, len);
-        notifyObservers();
+        try {
+            stringBuilder.insert(dstOffset, str);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, char[]): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int offset, String str) {
-        stringBuilder.insert(offset, str);
-        notifyObservers();
+       try {
+           stringBuilder.insert(offset, str);
+           notifyObservers();
+       } catch (Exception e) {
+           System.err.println("Ошибка при insert(int, String): " + e.getMessage());
+       }
+       return this;
+    }
+
+    public ObservableStringBuilder insert(int offset, char[] str, int strOffset, int strLen) {
+        try {
+            stringBuilder.insert(offset, str, strOffset, strLen);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, char[], int, int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int offset, boolean b) {
-        stringBuilder.insert(offset, b);
-        notifyObservers();
+        try {
+            stringBuilder.insert(offset, b);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, boolean): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int offset, char c) {
-        stringBuilder.insert(offset, c);
-        notifyObservers();
+        try {
+            stringBuilder.insert(offset, c);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, char): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int offset, int i) {
-        stringBuilder.insert(offset, i);
-        notifyObservers();
+        try {
+            stringBuilder.insert(offset, i);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, int): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int offset, long l) {
-        stringBuilder.insert(offset, l);
-        notifyObservers();
+        try {
+            stringBuilder.insert(offset, l);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, long): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int offset, float f) {
-        stringBuilder.insert(offset, f);
-        notifyObservers();
+        try {
+            stringBuilder.insert(offset, f);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, float): " + e.getMessage());
+        }
         return this;
     }
 
     public ObservableStringBuilder insert(int offset, double d) {
-        stringBuilder.insert(offset, d);
-        notifyObservers();
+        try {
+            stringBuilder.insert(offset, d);
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при insert(int, double): " + e.getMessage());
+        }
         return this;
-    }
-
-    public ObservableStringBuilder reverse() {
-        stringBuilder.reverse();
-        notifyObservers();
-        return this;
-    }
-
-    // Методы делегированные StringBuilder без уведомления (только чтение/получение информации)
-
-    public int capacity() {
-        return stringBuilder.capacity();
-    }
-
-    public char charAt(int index) {
-        return stringBuilder.charAt(index);
-    }
-
-    public int codePointAt(int index) {
-        return stringBuilder.codePointAt(index);
-    }
-
-    public int codePointBefore(int index) {
-        return stringBuilder.codePointBefore(index);
-    }
-
-    public int codePointCount(int beginIndex, int endIndex) {
-        return stringBuilder.codePointCount(beginIndex, endIndex);
-    }
-
-    public int compareTo(StringBuilder sb) {
-        return stringBuilder.compareTo(sb);
     }
 
     public int indexOf(String str) {
-        return stringBuilder.indexOf(str);
+        try {
+            return stringBuilder.indexOf(str);
+        } catch (Exception e) {
+            System.err.println("Ошибка при indexOf(String): " + e.getMessage());
+            return -1; // Или другое значение по умолчанию
+        }
     }
 
     public int indexOf(String str, int fromIndex) {
-        return stringBuilder.indexOf(str, fromIndex);
+        try {
+            return stringBuilder.indexOf(str, fromIndex);
+        } catch (Exception e) {
+            System.err.println("Ошибка при indexOf(String, int): " + e.getMessage());
+            return -1; // Или другое значение по умолчанию
+        }
     }
 
     public int lastIndexOf(String str) {
-        return stringBuilder.lastIndexOf(str);
+        try {
+            return stringBuilder.lastIndexOf(str);
+        } catch (Exception e) {
+            System.err.println("Ошибка при lastIndexOf(String): " + e.getMessage());
+            return -1; // Или другое значение по умолчанию
+        }
     }
 
     public int lastIndexOf(String str, int fromIndex) {
-        return stringBuilder.lastIndexOf(str, fromIndex);
+        try {
+            return stringBuilder.lastIndexOf(str, fromIndex);
+        } catch (Exception e) {
+            System.err.println("Ошибка при lastIndexOf(String, int): " + e.getMessage());
+            return -1; // Или другое значение по умолчанию
+        }
     }
 
-    public int length() {
-        return stringBuilder.length();
-    }
-
-    public IntStream codePoints() {
-        return stringBuilder.codePoints();
-    }
-
-    public IntStream chars() {
-        return stringBuilder.chars();
-    }
-
-    public String substring(int start) {
-        return stringBuilder.substring(start);
-    }
-
-    public String substring(int start, int end) {
-        return stringBuilder.substring(start, end);
-    }
-
-    public CharSequence subSequence(int start, int end) {
-        return stringBuilder.subSequence(start, end);
+    public ObservableStringBuilder reverse() {
+        try {
+            stringBuilder.reverse();
+            notifyObservers();
+        } catch (Exception e) {
+            System.err.println("Ошибка при reverse(): " + e.getMessage());
+        }
+        return this;
     }
 
     public String toString() {
         return stringBuilder.toString();
     }
 
-    public void trimToSize() {
-        stringBuilder.trimToSize();
+    public int length() {
+        return stringBuilder.length();
+    }
+
+    public int capacity() {
+        return stringBuilder.capacity();
     }
 
     public void ensureCapacity(int minimumCapacity) {
-        stringBuilder.ensureCapacity(minimumCapacity);
+        try {
+            stringBuilder.ensureCapacity(minimumCapacity);
+        } catch (Exception e) {
+            System.err.println("Ошибка при ensureCapacity(int): " + e.getMessage());
+        }
     }
 
-    public void setLength(int newLength) {
-        stringBuilder.setLength(newLength);
-        notifyObservers();
+    public void trimToSize() {
+        try {
+            stringBuilder.trimToSize();
+        } catch (Exception e) {
+            System.err.println("Ошибка при trimToSize(): " + e.getMessage());
+        }
     }
 
-    public void setCharAt(int index, char ch) {
-        stringBuilder.setCharAt(index, ch);
-        notifyObservers();
+    public char charAt(int index) {
+        try {
+            return stringBuilder.charAt(index);
+        } catch (Exception e) {
+            System.err.println("Ошибка при charAt(int): " + e.getMessage());
+            return '\0'; // Или другой символ по умолчанию
+        }
+    }
+
+    public CharSequence subSequence(int start, int end) {
+        try {
+            return stringBuilder.subSequence(start, end);
+        } catch (Exception e) {
+            System.err.println("Ошибка при subSequence(int, int): " + e.getMessage());
+            return ""; // Или другая пустая CharSequence
+        }
+    }
+
+    public String substring(int start) {
+        try {
+            return stringBuilder.substring(start);
+        } catch (Exception e) {
+            System.err.println("Ошибка при substring(int): " + e.getMessage());
+            return ""; // Или пустая строка
+        }
+    }
+
+    public String substring(int start, int end) {
+        try {
+            return stringBuilder.substring(start, end);
+        } catch (Exception e) {
+            System.err.println("Ошибка при substring(int, int): " + e.getMessage());
+            return ""; // Или пустая строка
+        }
     }
 
     // Методы для работы с наблюдателями
-
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -299,39 +441,17 @@ public class ObservableStringBuilder {
 
     private void notifyObservers() {
         for (Observer observer : observers) {
-            observer.update(this);
+            try {
+                observer.update(this);
+            } catch (Exception e) {
+                System.err.println("Ошибка при уведомлении наблюдателя: " + e.getMessage());
+                // Важно, чтобы ошибка в одном наблюдателе не ломала остальных.
+            }
         }
     }
+}
 
-    // Интерфейс наблюдателя
-    public interface Observer {
-        void update(ObservableStringBuilder stringBuilder);
-    }
-
-    public static void main(String[] args) {
-        ObservableStringBuilder observableStringBuilder = new ObservableStringBuilder("Hello");
-
-        // Создаем наблюдателя
-        Observer observer = new Observer() {
-            @Override
-            public void update(ObservableStringBuilder stringBuilder) {
-                System.out.println("StringBuilder has changed: " + stringBuilder.toString());
-            }
-        };
-
-        // Добавляем наблюдателя
-        observableStringBuilder.addObserver(observer);
-
-        // Вносим изменения, которые вызовут уведомление наблюдателя
-        observableStringBuilder.append(" World!");
-        observableStringBuilder.insert(5, ",");
-        observableStringBuilder.delete(12, 13);
-        observableStringBuilder.setCharAt(0, 'h');
-
-        // Удаляем наблюдателя
-        observableStringBuilder.removeObserver(observer);
-
-        //Еще одно изменение после удаления наблюдателя
-        observableStringBuilder.append(" - no one will know!");
-    }
+// Интерфейс наблюдателя
+interface Observer {
+    void update(ObservableStringBuilder builder);
 }
